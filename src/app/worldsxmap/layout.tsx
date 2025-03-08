@@ -20,7 +20,6 @@ const MainLayout = ({ children }: { children: ReactNode }) => {
     useEffect(() => {
         if (isLogin && !auth?._id && !charging) {
             router.push('/worldsxmap');
-
         }
     }, [auth, charging, router])
 
