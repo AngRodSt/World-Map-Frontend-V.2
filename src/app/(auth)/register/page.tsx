@@ -128,7 +128,7 @@ const RegisterForm = ({ setAlert }: RegisterFormProps) => {
         </div>
 
         <nav className="mt-2 lg:flex lg:justify-between">
-          <Link href="/worldsxmap" className="text-gray-200 block text-cente hover:scale-105 transition-all ease-in-out duration-200">
+          <Link href="/" className="text-gray-200 block text-cente hover:scale-105 transition-all ease-in-out duration-200">
             Do you have an account already? {""}
             <span className="text-amber-500 font-extrabold ">Login </span></Link>
         </nav>

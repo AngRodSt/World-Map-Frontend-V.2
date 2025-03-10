@@ -101,7 +101,7 @@ const NoteModal: React.FC<NoteModalProps> = ({ countryName, countryCode, setIsOp
             resize: 'none'
           }}></textarea>
           <p className="text-gray-400 mb-4 text-sm">Words: {wordCount}/{MAX_WORDS}</p>
-          <Button text={`${Object.keys(note ?? {}).length ? 'Edit Note' : 'Add Note'}`} setButtonClicked={buttonClicked} />
+          <Button text={`${note._id !== '' ? 'Edit Note' : 'Add Note'}`} setButtonClicked={buttonClicked} />
         </form>
       </div>
     </>

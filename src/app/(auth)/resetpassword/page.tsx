@@ -71,7 +71,7 @@ const ResetPassword = () => {
                 <div className="mt-2">
                     <Button text={"Send Email"} setButtonClicked={buttonClicked} />
                 </div>
-                <Link href="/worldsxmap" className="text-gray-200 block text-cente hover:scale-105 transition-all ease-in-out duration-200">
+                <Link href="/" className="text-gray-200 block text-cente hover:scale-105 transition-all ease-in-out duration-200">
                     Do you have an account already? {""}
                     <span className="text-amber-500 font-extrabold ">Login </span></Link>
             </form>

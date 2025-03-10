@@ -38,7 +38,7 @@ const Home = () => {
       })
     }
     else {
-      router.push('/worldsxmap/admin');
+      router.push('/home');
     }
     setButtonClicked(false)
   }
@@ -80,12 +80,12 @@ const Home = () => {
         </div>
 
         <nav className="mt-2 lg:flex lg:justify-between">
-          <Link href="/worldsxmap/register" className="text-gray-200 block text-center hover:scale-105 transition-all ease-in-out duration-200">
+          <Link href="/register" className="text-gray-200 block text-center hover:scale-105 transition-all ease-in-out duration-200">
             Don&apos;t have an account? {""}
             <span className="text-amber-500 font-extrabold ">Register </span></Link>
-          <Link href="/worldsxmap/resetPassword" className="text-gray-200 block text-center hover:scale-105 transition-all ease-in-out duration-200">
+          <Link href="/resetpassword" className="text-gray-200 block text-center hover:scale-105 transition-all ease-in-out duration-200">
             Do you forgot your {""}
-            <span className="text-amber-500 font-extrabold ">password?</span></Link>
+            <span className="text-amber-500 font-extrabold ">Password?</span></Link>
 
         </nav>
       </form>
