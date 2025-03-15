@@ -13,7 +13,7 @@ export default async function fetchGeoData() {
     }
 }
 
-export const fillSelectCountries = async() => {
+export const fillSelectCountries = async () => {
     const countries = new Set<string>()
     const geoData = await fetchGeoData()
     const geoDataFeatures = geoData.features
@@ -22,8 +22,6 @@ export const fillSelectCountries = async() => {
     }
     const arrCountry = Array.from(countries)
     return arrCountry.sort()
-
-
 }
 
 

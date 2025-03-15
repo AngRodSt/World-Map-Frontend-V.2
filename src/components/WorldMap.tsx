@@ -20,7 +20,7 @@ const Worldmap = () => {
 
     // Creates a lookup object to store saved countries with their colors
     const arrCountry = useMemo(() => {
-        return countries.reduce((acc: { [key: string]: string }, item) => {
+        return countries.reduce((acc: { [key: string]: string }, item: { country: string; color: string }) => {
             acc[item.country] = item.color;
             return acc;
         }, {} as { [key: string]: string })

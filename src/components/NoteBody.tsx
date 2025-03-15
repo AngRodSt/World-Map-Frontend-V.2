@@ -8,8 +8,6 @@ import ConfirmModal from "./ConfirmModal";
 import Image from "next/image";
 import styled from 'styled-components';
 
-
-
 export interface NoteProps {
     message?: string,
     country?: string,

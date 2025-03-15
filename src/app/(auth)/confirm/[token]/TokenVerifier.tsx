@@ -1,7 +1,7 @@
 import axiosClient from "@/config/axios"
 import handleApiError from "@/utils/handleApiError";
 
-
+// Function to verify the token by making an API call
 const TokenVerifier = async (token: string) => {
   let isValid = false;
   let msg: string | null = null

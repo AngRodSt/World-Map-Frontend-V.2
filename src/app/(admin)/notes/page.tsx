@@ -8,18 +8,19 @@ import { fillSelectCountries } from "@/utils/fetchGeoData"
 
 
 export default function Notes() {
+   // Custom hook for managing notes
   const { notes, filterNotes, notesFiltered } = useNotes()
+
   const [countries, setCountries] = useState<string[]>([])
-  const [selectedFilter, setSelectedFilter] = useState({
-    country: '',
-    date: ''
-  })
+  const [selectedFilter, setSelectedFilter] = useState({country: '', date: ''})
   const [charging, setCharging] = useState(false)
 
+  // Fetches the list of countries when the component mounts
   useEffect(() => {
     fillSelectCountries().then(setCountries)
   }, [])
 
+  // Filters notes when the selected filter changes or when notes update
   useEffect(() => {
     const fillFilter = async () => {
       setCharging(true)
@@ -48,7 +49,7 @@ export default function Notes() {
           <section className="flex gap-2 flex-col sm:flex-row ">
             <div className="flex  ">
               {countries && <select name="countryFilter" value={selectedFilter.country || ""} id="countryFilter" onChange={(e) => { setSelectedFilter({ ...selectedFilter, country: e.target.value }) }} className=" p-2 rounded-md w-full bg-gray-100 ">
-                <option disabled value=''>Countrys</option>
+                <option disabled value=''>Countries</option>
                 {countries.map((country) => (
                   <option key={country} value={country}>{country}</option>
                 ))}
@@ -73,10 +74,11 @@ export default function Notes() {
 }
 
 
-
+// Memoized Paginator Component for performance optimization
 const Paginator = memo(({ notes }: { notes: NoteType[] }) => {
 Paginator.displayName = "Paginator";
 
+  // Component for displaying current page items
   function Items({ currentItems } : {currentItems: NoteType[]}) {
     return (
       <>
@@ -87,7 +89,8 @@ Paginator.displayName = "Paginator";
       </>
     );
   }
-
+  
+  // Component for handling pagination logic
   function PaginatedItems({ itemsPerPage }: {itemsPerPage: number}) {
     const [itemOffset, setItemOffset] = useState(0);
 

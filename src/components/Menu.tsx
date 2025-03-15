@@ -3,13 +3,11 @@
 import useAuth from "@/hooks/UseAuth";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-
 interface MenuProps {
     onOpen: boolean,
     onClose: () => void
 
 }
-
 
 const Menu: React.FC<MenuProps> = ({ onOpen, onClose }) => {
 

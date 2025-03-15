@@ -1,58 +1,34 @@
 'use client'
 
-import { useState, useEffect, createContext, ReactNode } from "react";
+import { useState, useEffect, createContext } from "react";
 import axiosClient from "../config/axios";
 import useAuth from "@/hooks/UseAuth";
 import axios from "axios";
+import { getCookies } from "@/utils/getCookies";
+import { Country, CountryContextProps, CountryProviderProps, SaveCountyProps } from "@/types/coutries";
 
-
-interface CountryContextProps {
-    country?: Country;
-    setCountry?: React.Dispatch<React.SetStateAction<Country>>;
-    countries: Country[];
-    setCountries?: React.Dispatch<React.SetStateAction<Country[]>>;
-    saveCountry: (country: SaveCountyProps) => Promise<void>;
-    deleteCountry: (id: string) => Promise<void>;
-}
-
-interface SaveCountyProps {
-    country?: string,
-    color?: string,
-    id?: string
-}
 
 const CountryContext = createContext<CountryContextProps>({
-    country: {_id: '', country: '', color: ''},
-    setCountry: () => {},
+    country: { _id: '', country: '', color: '' },
+    setCountry: () => { },
     countries: [],
-    setCountries: ()=> {},
-    saveCountry: async () => {},
-    deleteCountry:async () => {}
-   
+    setCountries: () => { },
+    saveCountry: async () => { },
+    deleteCountry: async () => { }
+
 });
-
-interface Country {
-    _id: string;
-    country: string;
-    color: string;
-}
-
-interface CountryProviderProps {
-    children: ReactNode
-}
 
 const CountryProvider: React.FC<CountryProviderProps> = ({ children }) => {
     const { auth } = useAuth();
-    
-  
-
     const [countries, setCountries] = useState<Country[]>([])
-    const [country, setCountry] = useState<Country>({_id: '', country: '', color: ''})
+    const [country, setCountry] = useState<Country>({ _id: '', country: '', color: '' })
 
     useEffect(() => {
         const getCountries = async () => {
-            const token = localStorage.getItem('MapToken');
-            if (!token) return;
+            const token = await getCookies()
+            if (!token) {
+                return null;
+            }
 
             const config = {
                 headers: {
@@ -74,10 +50,12 @@ const CountryProvider: React.FC<CountryProviderProps> = ({ children }) => {
 
     }, [auth])
 
-  
+
     const saveCountry = async (country: SaveCountyProps) => {
-        const token = localStorage.getItem('MapToken');
-        if (!token) return;
+        const token = await getCookies()
+        if (!token) {
+            return;
+        }
 
         const config = {
             headers: {
@@ -112,8 +90,10 @@ const CountryProvider: React.FC<CountryProviderProps> = ({ children }) => {
     }
 
     const deleteCountry = async (id: string) => {
-        const token = localStorage.getItem('MapToken');
-        if (!token) return;
+        const token = await getCookies()
+        if (!token) {
+            return;
+        }
 
         const config = {
             headers: {
@@ -134,9 +114,8 @@ const CountryProvider: React.FC<CountryProviderProps> = ({ children }) => {
 
     }
 
-
     return (
-        <CountryContext.Provider value={{countries, setCountry, country, saveCountry, deleteCountry }}>
+        <CountryContext.Provider value={{ countries, setCountry, country, saveCountry, deleteCountry }}>
             {children}
         </CountryContext.Provider>
     )
