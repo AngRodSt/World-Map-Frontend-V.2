@@ -1,9 +1,11 @@
 import { ReactNode } from "react"
+import Image from "next/image"
 
 const MainLayout = ({ children }: { children: ReactNode }) => {
 
     return (
-        <main className=" absolute  w-full min-h-screen bg-[url(/backgroud1.jpg)] bg-cover bg-no-repeat bg-fixed filter transition-opacity ">
+        <>
+            <Image src={'/backgroud1.webp'} width={1920} height={1080} alt="background" className="absolute w-full min-h-screen object-cover " />
             <div className=" absolute  flex md:flex-row flex-col inset-0 bg-gradient-to-r from-black/70 bg-cover bg-no-repeat bg-fixed filter transition-opacity ">
                 <div className="hidden md:block md:w-1/2 lg:w-2/3 ">
                     <div className=" text-white font-[family-name:var(--font-poiret-one)] flex flex-col justify-end  h-screen px-10 pb-32 ">
@@ -21,7 +23,8 @@ const MainLayout = ({ children }: { children: ReactNode }) => {
                     </div>
                 </div>
             </div>
-        </main>
+        </>
+
     )
 }
 

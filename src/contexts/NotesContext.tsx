@@ -1,68 +1,25 @@
 'use client'
 
-import { useState, useEffect, createContext, ReactNode } from "react";
+import { useState, useEffect, createContext } from "react";
 import axiosClient from "../config/axios";
 import useAuth from "@/hooks/UseAuth";
 import axios from "axios";
 import handleApiError from "@/utils/handleApiError";
-
-
-
-interface NotesContextProps {
-    note: Note
-    setNote: React.Dispatch<React.SetStateAction<Note>>;
-    notes: Note[];
-    setNotes: React.Dispatch<React.SetStateAction<Note[]>>;
-    saveNote: (note: SaveNotesProps) => Promise<null| string>;
-    editNote: (note: Note) => Promise<void>;
-    filterNotes: (params: FilterNotesPros) => Promise<null| string>;
-    deleteNote: (id: string) => Promise<null| string>;
-    notesFiltered: Note[]
-    setNotesFiltered: React.Dispatch<React.SetStateAction<Note[]>>;
-}
-
+import { getCookies } from "@/utils/getCookies";
+import { FilterNotesPros, Note, NotesContextProps, NotesProviderProps, SaveNotesProps } from "@/types/notes";
 
 const NotesContext = createContext<NotesContextProps>({
     note: { _id: '' },
-    setNote: () => {},
+    setNote: () => { },
     notes: [],
-    setNotes: () => {},
-    saveNote:async () => null,
-    editNote: async () => {},
+    setNotes: () => { },
+    saveNote: async () => null,
+    editNote: async () => { },
     filterNotes: async () => null,
     deleteNote: async () => null,
     notesFiltered: [],
-    setNotesFiltered:()=> {}
+    setNotesFiltered: () => { }
 });
-
-
-interface SaveNotesProps {
-    message?: string,
-    country?: string,
-    name?: string,
-    code?: string,
-    id: string | null
-    date?: Date
-}
-
-
-interface NotesProviderProps {
-    children: ReactNode
-}
-
-interface Note {
-    message?: string,
-    country?: string,
-    name?: string,
-    code?: string,
-    _id: string,
-    date?: Date
-}
-
-interface FilterNotesPros {
-    country?:string,
-    date?: Date
-}
 
 const NotesProvider: React.FC<NotesProviderProps> = ({ children }) => {
     const { auth } = useAuth();
@@ -70,12 +27,13 @@ const NotesProvider: React.FC<NotesProviderProps> = ({ children }) => {
     const [notesFiltered, setNotesFiltered] = useState<Note[]>([]);
     const [note, setNote] = useState<Note>({ _id: '' })
 
-
     useEffect(() => {
 
         const getNotes = async () => {
-            const token = localStorage.getItem('MapToken');
-            if (!token) return;
+            const token = await getCookies()
+            if (!token) {
+                return null;
+            }
 
             const config = {
                 headers: {
@@ -96,11 +54,12 @@ const NotesProvider: React.FC<NotesProviderProps> = ({ children }) => {
         getNotes()
     }, [auth])
 
-   
 
-    const saveNote = async (note: SaveNotesProps) => {
-        const token = localStorage.getItem('MapToken');
-        if (!token) return;
+    const saveNote = async (note: SaveNotesProps): Promise<string | null> => {
+        const token = await getCookies()
+        if (!token) {
+            return null;
+        }
 
         const config = {
             headers: {
@@ -137,10 +96,11 @@ const NotesProvider: React.FC<NotesProviderProps> = ({ children }) => {
         setNote(note)
     }
 
-    
     const filterNotes = async (params: FilterNotesPros) => {
-        const token = localStorage.getItem('MapToken');
-        if (!token) return;
+        const token = await getCookies()
+        if (!token) {
+            return null;
+        }
 
         const config = {
             headers: {
@@ -158,8 +118,10 @@ const NotesProvider: React.FC<NotesProviderProps> = ({ children }) => {
         }
     }
     const deleteNote = async (id: string) => {
-        const token = localStorage.getItem('MapToken');
-        if (!token) return;
+        const token = await getCookies()
+        if (!token) {
+            return null;
+        }
 
         const config = {
             headers: {
@@ -174,10 +136,9 @@ const NotesProvider: React.FC<NotesProviderProps> = ({ children }) => {
             setNotes(updateNotes)
             return null
         } catch (error: unknown) {
-           return handleApiError(error)
+            return handleApiError(error)
         }
     }
-
 
     return (
         <NotesContext.Provider value={{ setNotes, editNote, note, setNote, notes, saveNote, deleteNote, filterNotes, notesFiltered, setNotesFiltered }}>

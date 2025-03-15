@@ -1,80 +1,59 @@
 'use client'
 
-import { useState } from "react"
+import { useEffect, useState } from "react"
+import { useActionState } from "react"
+import Alert from "@/components/Alert"
 import Button from "@/components/Button"
 import Link from "next/link"
-import useAuth from "@/hooks/UseAuth"
-import Alert from "@/components/Alert"
+import { handleResetPassword } from "./resetPasswordAction"
 
+// Initial state for the form action
+const initialState = { success: false, message: '', error: null }
 
 const ResetPassword = () => {
+    // Manage state for form submission, loading, and alert messages
+    const [state, formAction, isPending] = useActionState(handleResetPassword, initialState)
     const [email, setEmail] = useState('')
-    const [buttonClicked, setButtonClicked] = useState(false)
-    const { sendEmailResetPassword } = useAuth()
-    const [alert, setAlert] = useState<{ msg: string | null, error: boolean }>({ msg: '', error: false })
+    const [alert, setAlert] = useState<{ msg: string | null, error: boolean }>({ msg: null, error: false })
 
-
-    const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
-        e.preventDefault();
-
-        if (!email.trim()) {
-            return setAlert({
-                msg: 'The field is mandatory',
-                error: true
-            })
+    // Handle form submission response and set alert messages accordingly
+    useEffect(() => {
+        if (state?.error) {
+            setAlert({ msg: state.error, error: true })
         }
-
-        setButtonClicked(true)
-
-        // Attempt to send password reset email
-        const sendEmailError = await sendEmailResetPassword({ email })
-        if (sendEmailError) {
-            setAlert({
-                msg: sendEmailError || 'Hubo un error',
-                error: true
-            })
-        } else {
-            setAlert({
-                msg: 'Email send it correctly, please check your imbox',
-                error: false
-            })
-            
-            // Reset email and alert after 2 seconds
+        else if (state?.success && state?.message) {
+            setAlert({ msg: state.message, error: false })
             setTimeout(() => {
-                setAlert({ msg: '', error: false })
                 setEmail('')
             }, 2000);
         }
-
-        // Ensure button state resets even if an error occurs
-        setButtonClicked(false)
-    }
+    }, [state?.error, state?.message]);
 
     const { msg } = alert
-
-
     return (
         <>
-            <form className="w-full" onSubmit={handleSubmit}>
-                {msg && <Alert alert={alert} />}
+            {msg && <Alert alert={alert} />}
+            <form action={formAction} className="w-full">
                 <div className="flex flex-col mt-5">
                     <label htmlFor="email"
                         className="font-bold text-white text-xl block">
                         E-mail
                     </label>
-                    <input id="email" type="email"
+                    <input id="email" type="email" name="email"
                         className="border p-3 mt-3 w-full bg-gray-50 rounded-lg"
                         placeholder="E-mail" autoComplete="username"
                         value={email}
-                        onChange={(e) => setEmail(e.target.value)} />
+                        onChange={(e) => setEmail(e.target.value)}
+                        required />
                 </div>
                 <div className="mt-2">
-                    <Button text={"Send Email"} setButtonClicked={buttonClicked} />
+                    <Button text={"Send Email"} setButtonClicked={isPending} />
                 </div>
                 <Link href="/" className="text-gray-200 block text-cente hover:scale-105 transition-all ease-in-out duration-200">
                     Do you have an account already? {""}
                     <span className="text-amber-500 font-extrabold ">Login </span></Link>
             </form>
+
         </>
     )
 }
