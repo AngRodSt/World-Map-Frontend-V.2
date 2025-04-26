@@ -25,6 +25,17 @@ export default function Login() {
   const router = useRouter();
   const [formData, setFormData] = useState({ email: "", password: "" });
 
+  useEffect(() => {
+    const pingBackend = async () => {
+      try {
+        await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/worldmap/health`);
+      } catch (error) {
+        console.error("Waking up Server:", error);
+      }
+    };
+    pingBackend();
+  }, []);
+
   // Effect to handle user state after successful login or error handling
   useEffect(() => {
     if (state?.success && state?.user) {

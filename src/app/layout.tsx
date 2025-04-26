@@ -6,7 +6,6 @@ import { CountryProvider } from "@/contexts/CountryContext";
 import { NotesProvider } from "@/contexts/NotesContext";
 import React from "react";
 
-
 const geistSans = Geist({
   variable: "--font-geist-sans",
   subsets: ["latin"],
@@ -25,9 +24,9 @@ const poiretOne = Poiret_One({
 
 export const metadata: Metadata = {
   title: "WorldsxMap Project",
-  description: "Explore countries, add notes about your experiences, and keep track of the people you meet.",
+  description:
+    "Explore countries, add notes about your experiences, and keep track of the people you meet.",
 };
-
 
 export default function RootLayout({
   children,
@@ -40,7 +39,8 @@ export default function RootLayout({
         <CountryProvider>
           <NotesProvider>
             <body
-              className={`${geistSans.variable} ${geistMono.variable} ${poiretOne.variable} antialiased bg-gray-200`}>
+              className={`${geistSans.variable} ${geistMono.variable} ${poiretOne.variable} antialiased bg-gray-200`}
+            >
               {children}
             </body>
           </NotesProvider>
